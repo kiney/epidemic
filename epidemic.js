@@ -174,6 +174,7 @@ function evolve(){
     sickCohorts = newSickCohorts;
     deceasedCohorts = newDeceasedCohorts;
     curedCohorts = newCuredCohorts;
+    updateNumbers();
 }
 
 function getTotalSick(){
@@ -353,7 +354,6 @@ function updateNumbers(){
 }
 
 function plot(){
-    updateNumbers();
     barChart("sick", totalSick, undefined, dates);
     barChart("healthy", totalHealthy, undefined, dates);
     barChart("cured", totalCured, undefined, dates);
@@ -368,12 +368,15 @@ function evolveAndPlot(){
     stopped = false;
     if (!paused){
         evolve();
-        plot();
+        if (t%10 == 0) {
+            plot();
+        }
         t++;
     }
-    if (t < 200)
-        setTimeout(evolveAndPlot, 200);
+    if (t <= 365)
+        setTimeout(evolveAndPlot, 5);
     else
+        plot()
         stopped = true;
 }
 
